@@ -1,0 +1,23 @@
+@font-face{font-family:'Inter';font-style:normal;font-weight:300 600;font-display:swap;src:url(fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{color-scheme:dark;--night:#0b0a16;--warm:#f2ece2;--accent:#f5a524;--soft:#c9c3d8}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--night);color:var(--warm);font:17px/1.7 Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:#1a1405;padding:10px 16px;border-radius:6px;z-index:10}
+.skip:focus{left:8px}
+.lw{max-width:760px;margin:0 auto;padding:24px 20px 72px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:20px;text-decoration:none}
+.back:hover{text-decoration:underline}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.15;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:22px;line-height:1.3;margin:36px 0 6px}
+p,li{color:var(--soft);margin:8px 0}
+ul{padding-left:22px}
+.upd{font-size:15px}
+.pend{background:#f5a52422;border:1px dashed var(--accent);padding:0 6px;border-radius:4px;color:var(--warm)}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:16px}
+th,td{border:1px solid #ffffff33;padding:10px 12px;text-align:left;vertical-align:top;color:var(--soft)}
+th{color:var(--warm);font-weight:600}
+.foot2{margin-top:48px;padding-top:20px;border-top:1px solid #ffffff22;font-size:15px}
+.foot2 a{display:inline-flex;align-items:center;min-height:44px;margin-right:18px}
