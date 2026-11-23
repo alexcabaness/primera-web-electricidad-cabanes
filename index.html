@@ -394,6 +394,45 @@ main:focus{outline:none}
   .about .lead .w{opacity:1}
   .tile img{top:0;height:100%;transform:none!important}
 }
+/* Fondo difuso eléctrico (ámbar + violeta/azul) de Servicios al final.
+   Solo degradados radiales estáticos: sin blur, sin animación, sin coste de fps. */
+#servicios,#quienes-somos,#viviendas,#obras,#opiniones,#contacto,.foot{background-repeat:no-repeat}
+#servicios{background-image:
+  radial-gradient(ellipse 62vw 58% at 6% 22%,rgba(122,44,255,.42),transparent 70%),
+  radial-gradient(ellipse 52vw 50% at 96% 78%,rgba(245,165,36,.30),transparent 70%),
+  radial-gradient(ellipse 40vw 36% at 58% 52%,rgba(44,61,255,.20),transparent 72%)}
+#quienes-somos{background-image:
+  radial-gradient(ellipse 58vw 56% at 94% 24%,rgba(245,165,36,.34),transparent 70%),
+  radial-gradient(ellipse 56vw 54% at 4% 80%,rgba(122,44,255,.38),transparent 70%),
+  radial-gradient(ellipse 36vw 32% at 46% 48%,rgba(44,61,255,.18),transparent 72%)}
+#viviendas{background-image:
+  radial-gradient(ellipse 60vw 52% at 10% 18%,rgba(44,61,255,.34),transparent 70%),
+  radial-gradient(ellipse 54vw 52% at 92% 70%,rgba(122,44,255,.34),transparent 70%),
+  radial-gradient(ellipse 34vw 30% at 62% 92%,rgba(245,165,36,.20),transparent 72%)}
+#obras{background-image:
+  radial-gradient(ellipse 56vw 54% at 92% 16%,rgba(245,165,36,.30),transparent 70%),
+  radial-gradient(ellipse 58vw 56% at 6% 62%,rgba(122,44,255,.36),transparent 70%),
+  radial-gradient(ellipse 38vw 34% at 70% 86%,rgba(44,61,255,.22),transparent 72%)}
+#opiniones{background-image:
+  radial-gradient(ellipse 60vw 56% at 8% 30%,rgba(245,165,36,.28),transparent 70%),
+  radial-gradient(ellipse 56vw 52% at 94% 74%,rgba(44,61,255,.34),transparent 70%),
+  radial-gradient(ellipse 36vw 32% at 50% 8%,rgba(122,44,255,.22),transparent 72%)}
+#contacto{background-image:
+  radial-gradient(ellipse 58vw 54% at 90% 22%,rgba(122,44,255,.38),transparent 70%),
+  radial-gradient(ellipse 56vw 52% at 6% 78%,rgba(245,165,36,.30),transparent 70%),
+  radial-gradient(ellipse 36vw 32% at 52% 50%,rgba(44,61,255,.18),transparent 72%)}
+.foot{background-image:
+  radial-gradient(ellipse 60vw 120% at 14% 120%,rgba(122,44,255,.34),transparent 70%),
+  radial-gradient(ellipse 50vw 110% at 92% 130%,rgba(245,165,36,.26),transparent 70%)}
+@media(max-width:760px){
+  #servicios,#quienes-somos,#viviendas,#obras,#opiniones,#contacto{background-size:100% 100%}
+  #servicios{background-image:radial-gradient(ellipse 120vw 40% at 0% 18%,rgba(122,44,255,.40),transparent 70%),radial-gradient(ellipse 110vw 36% at 100% 82%,rgba(245,165,36,.28),transparent 70%)}
+  #quienes-somos{background-image:radial-gradient(ellipse 120vw 40% at 100% 20%,rgba(245,165,36,.30),transparent 70%),radial-gradient(ellipse 110vw 38% at 0% 80%,rgba(122,44,255,.36),transparent 70%)}
+  #viviendas{background-image:radial-gradient(ellipse 120vw 40% at 0% 16%,rgba(44,61,255,.34),transparent 70%),radial-gradient(ellipse 110vw 38% at 100% 80%,rgba(122,44,255,.32),transparent 70%)}
+  #obras{background-image:radial-gradient(ellipse 120vw 36% at 100% 12%,rgba(245,165,36,.28),transparent 70%),radial-gradient(ellipse 110vw 36% at 0% 60%,rgba(122,44,255,.34),transparent 70%),radial-gradient(ellipse 100vw 30% at 100% 92%,rgba(44,61,255,.22),transparent 70%)}
+  #opiniones{background-image:radial-gradient(ellipse 120vw 40% at 0% 22%,rgba(245,165,36,.26),transparent 70%),radial-gradient(ellipse 110vw 38% at 100% 80%,rgba(44,61,255,.32),transparent 70%)}
+  #contacto{background-image:radial-gradient(ellipse 120vw 36% at 100% 12%,rgba(122,44,255,.36),transparent 70%),radial-gradient(ellipse 110vw 36% at 0% 88%,rgba(245,165,36,.28),transparent 70%)}
+}
 </style>
 </head>
 <body>
