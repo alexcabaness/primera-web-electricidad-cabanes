@@ -70,6 +70,9 @@
 }
 </script>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/logo-cabanes.webp" as="image" type="image/webp" fetchpriority="high">
+<script>/* Portada animada con el scroll: solo con JS y sin "reducir movimiento"; si no, se ve el estado final */
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('hx')</script>
 <style>
 /* VOICE: sobrio y artesanal; un oficio que se hereda
    IDEA: un hilo (el cable) que se va tejiendo a medida que se baja por la página
@@ -94,7 +97,35 @@ a{color:inherit}
 .wrap{max-width:1240px;margin:0 auto}
 
 /* HERO */
-.hero{position:relative;min-height:100svh;background:var(--night);color:var(--warm);display:flex;flex-direction:column;justify-content:center;gap:clamp(28px,6vh,64px);padding:40px max(5vw,16px) 84px;overflow:hidden}
+.hero{position:relative;background:var(--night);color:var(--warm)}
+.stage{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:40px max(5vw,16px) 84px;overflow:hidden}
+/* PORTADA "CONECTAR" (estilo nitor/BRACE): la sección mide 230svh y su escenario se queda fijo mientras
+   el scroll dibuja el cable, salta la chispa y se encienden las letras. Sin animación de salida:
+   al acabar el escenario se suelta y la sección siguiente entra con un fundido. */
+.hx .hero{height:230svh}
+.hx .stage{position:sticky;top:0;height:100svh}
+.lg{display:block;width:min(92vw,880px);container-type:inline-size;margin-inline:auto}
+.lgi{--W:1212;--H:193;--u:calc(100cqw / var(--W));position:relative;display:block;height:calc(var(--H) * var(--u))}
+.g{--gx:0;--gy:0;--gs:1;position:absolute;left:0;top:0;transform:translate(calc(var(--gx) * var(--u)),calc(var(--gy) * var(--u))) scale(var(--gs));transform-origin:0 0}
+.pc,.cw,.tip,.spark{position:absolute;display:block;left:calc(var(--x) * var(--u));top:calc(var(--y) * var(--u));width:calc(var(--w) * var(--u));height:calc(var(--h) * var(--u))}
+.pc{background:url(img/logo-cabanes.webp) no-repeat calc(var(--x) * var(--u) * -1) calc(var(--y) * var(--u) * -1)/calc(1212 * var(--u)) auto}
+.pc.glow{background-image:url(img/logo-glow.webp);opacity:.6}
+.cw{overflow:hidden}.cw>.pc{left:0;top:0}
+.tip{--x:0;--y:0;--w:26;--h:26;border-radius:50%;background:radial-gradient(closest-side,#fff,#ffd27a 35%,rgba(255,170,40,.35) 60%,transparent);opacity:0}
+.spark{--x:298;--y:50;--w:120;--h:120;border-radius:50%;background:radial-gradient(closest-side,#fff 0,#ffe3a1 14%,rgba(255,176,60,.55) 34%,rgba(255,150,30,.12) 62%,transparent);opacity:0}
+.flash{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 48%,rgba(255,176,60,.28),transparent 70%);opacity:0}
+.tag{margin:0;text-align:center;font:500 clamp(17px,1.9vw,22px)/1.4 var(--font);letter-spacing:.01em;color:var(--warm)}
+.tag b{color:var(--accent);font-weight:600}
+.hx .pc.lt,.hx .pc.lk{opacity:.08}.hx .pc.glow,.hx .tag,.hx .hero-cta{opacity:0}
+.hx .cw{transform:translateX(-100%)}.hx .cw>.pc{transform:translateX(100%)}
+.cw,.cw>.pc,.tag,.hero-cta,.pc.lt,.pc.lk,.tip,.spark,.flash,.down,.hero canvas{will-change:transform,opacity}
+@media(max-width:760px){
+  /* Móvil: enchufe y cable arriba (más grandes) y el nombre debajo, como antes */
+  .lg{width:min(100%,560px)}
+  .lgi{--W:860;--H:351}
+  .g1{--gx:201;--gy:-75;--gs:1.25}
+  .g2{--gx:-345;--gy:171}
+}
 /* Manchas de luz: degradados radiales (sin filter:blur ni máscaras ni mix-blend-mode) y solo se anima transform.
    El desvanecido de los bordes se hace con un degradado estático en ::before de la sección, fuera del grupo de opacidad. */
 .aura{position:absolute;inset:0;z-index:-1;overflow:hidden;background:linear-gradient(180deg,#06050e 0%,#0b0a1c 42%,#130f36 100%)}
@@ -111,8 +142,7 @@ a{color:inherit}
 @keyframes d3{to{transform:translate(-8vw,-3vh) scale(1.1)}}
 @keyframes d4{to{transform:translate(7vw,-5vh) scale(.9)}}
 @keyframes d5{to{transform:translate(-9vw,5vh) scale(1.15)}}
-.hero-in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,3.2vh,32px);will-change:transform,opacity}
-.logo{display:block;width:min(92vw,880px);height:auto;animation:wipe 2.4s .3s cubic-bezier(.6,.05,.25,1) both}
+.hero-in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3.4vh,34px)}
 @keyframes wipe{from{clip-path:inset(-30% 100% -30% -5%);opacity:.2}to{clip-path:inset(-30% -5% -30% -5%);opacity:1}}
 .logo text{font-family:var(--font);fill:var(--warm)}
 .logo .t1{font-weight:300;font-size:44px}
@@ -127,8 +157,6 @@ a{color:inherit}
 @keyframes bob{50%{transform:translateY(6px)}}
 /* Móvil / táctil: versión ligera (sin clip-path animado, manchas estáticas y menos capas) */
 @media(max-width:760px),(pointer:coarse){
-  .logo{animation:lift 1.2s .2s ease both}
-  @keyframes lift{from{opacity:0;transform:translateY(10px)}}
   .aura i{animation:none!important;will-change:auto}.aura .b0,.aura .b4{display:none}
 }
 
@@ -244,7 +272,7 @@ h3{font:500 clamp(21px,2.1vw,27px)/1.2 var(--font);margin:0 0 10px}
 @media(max-width:600px){
   .band{padding:44px max(5vw,16px)}
   .head{gap:8px;margin-bottom:22px}.head p{font-size:15px}
-  .hero{padding:24px 16px 72px}.hero-in{gap:26px}
+  .stage{padding:24px 16px 72px}.hero-in{gap:26px}
   .about .lead{font-size:24px;margin-bottom:28px}.pillars{gap:22px}
   .feature{margin-top:36px;gap:18px}
   .wa{width:52px;height:52px;right:14px;bottom:14px}.wa svg{width:28px;height:28px}
@@ -253,7 +281,7 @@ h3{font:500 clamp(21px,2.1vw,27px)/1.2 var(--font);margin:0 0 10px}
 /* ---- Fase 3: portada, servicios, opiniones, pie ---- */
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .btn-a:focus-visible,.btn-o:focus-visible,.foot a:focus-visible,a.stat:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.logo-h{margin:0;line-height:0}
+.logo-h{margin:0;line-height:0;width:100%}
 .hero-sub{margin:0;max-width:36em;text-align:center;font:400 clamp(18px,2vw,24px)/1.45 var(--font);color:color-mix(in srgb,var(--warm) 90%,transparent);text-wrap:balance}
 .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
 .hero .btn-o{color:var(--warm)}
@@ -345,6 +373,10 @@ main:focus{outline:none}
 
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
+/* Entrada de la sección que sigue a la portada, como en nitor: fundido + 40 px, 0,8 s, escalonado */
+#resumen .reveal{transform:translateY(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
+#resumen .reveal:nth-child(2){transition-delay:.08s}#resumen .reveal:nth-child(3){transition-delay:.16s}#resumen .reveal:nth-child(4){transition-delay:.24s}
+#resumen .reveal.in{transform:none}
 
 @media(max-width:900px){
   .head,.fych,.cowork,.dimoni,.pillars,.ct{grid-template-columns:minmax(0,1fr)}
@@ -362,20 +394,11 @@ main:focus{outline:none}
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal,.stat,.logo .wordmark,.logo .plug,.wa,.call,.tile{opacity:1;transform:none}.wa::before{display:none}
   .pillar::before{transform:scaleX(1)}
+  #resumen .reveal{transform:none}
   .about .lead .w{opacity:1}
   .tile img{top:0;height:100%;transform:none!important}
 }
 /* ---- Versión 2: móvil primero ---- */
-/* Logo en móvil: el mismo logo partido en dos piezas (enchufe + palabra) apiladas, para que sea el protagonista de la primera pantalla */
-.logo-m{display:none}
-@media(max-width:760px){
-  .logo-h{width:100%}
-  .logo{display:none}
-  .logo-m{display:flex;flex-direction:column;align-items:center;gap:clamp(12px,3.4vw,20px);width:100%;line-height:0;animation:lift 1.2s .2s ease both}
-  .logo-m i{display:block;background-image:url(img/logo-cabanes.webp);background-repeat:no-repeat}
-  .logo-m .lp{width:min(66vw,280px);aspect-ratio:336/104;background-size:360.7% auto;background-position:1.83% 62.9%}
-  .logo-m .lw{width:100%;max-width:560px;aspect-ratio:845/155;background-size:143.4% auto;background-position:97% 52.6%}
-}
 .hero-cta .btn-a,.hero-cta .btn-o{min-height:44px;padding:0 20px;font-size:15px}
 .hero-cta{gap:10px}
 
@@ -505,17 +528,49 @@ main:focus{outline:none}
 </defs></svg>
 
 <header class="hero" id="inicio">
+ <div class="stage" id="stage">
   <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="flash" id="hFlash" aria-hidden="true"></div>
   <div class="hero-in" id="heroIn">
-    <h1 class="logo-h"><img class="logo" fetchpriority="high" src="img/logo-cabanes.webp" alt="" width="1212" height="193"><span class="logo-m" aria-hidden="true"><i class="lp"></i><i class="lw"></i></span><span class="sr">Electricidad Cabanes · Electricista en Monóvar (Alicante)</span></h1>
-    <div class="hero-cta">
+    <h1 class="logo-h"><span class="lg" aria-hidden="true"><span class="lgi">
+<span class="g g1">
+<span class="pc" style="--x:18;--y:60;--w:138;--h:114"></span>
+<span class="cw" style="--x:156;--y:96;--w:206;--h:42"><span class="pc" style="--x:156;--y:96;--w:206;--h:42"></span></span>
+<span class="tip" id="hTip"></span><span class="spark" id="hSpark"></span>
+</span>
+<span class="g g2">
+<span class="pc glow" id="hGlow" style="--x:340;--y:0;--w:872;--h:193"></span>
+<span class="pc lt" style="--x:371;--y:18;--w:36;--h:48"></span>
+<span class="pc lt" style="--x:437;--y:18;--w:35;--h:48"></span>
+<span class="pc lt" style="--x:500;--y:18;--w:36;--h:48"></span>
+<span class="pc lt" style="--x:563;--y:18;--w:41;--h:48"></span>
+<span class="pc lt" style="--x:629;--y:18;--w:39;--h:48"></span>
+<span class="pc lt" style="--x:696;--y:18;--w:39;--h:48"></span>
+<span class="pc lt" style="--x:766;--y:18;--w:15;--h:48"></span>
+<span class="pc lt" style="--x:811;--y:18;--w:42;--h:48"></span>
+<span class="pc lt" style="--x:883;--y:18;--w:15;--h:48"></span>
+<span class="pc lt" style="--x:931;--y:18;--w:44;--h:48"></span>
+<span class="pc lt" style="--x:999;--y:18;--w:46;--h:48"></span>
+<span class="pc lt" style="--x:1073;--y:18;--w:44;--h:48"></span>
+<span class="pc lk" style="--x:352;--y:70;--w:118;--h:104"></span>
+<span class="pc lk" style="--x:473;--y:70;--w:133;--h:104"></span>
+<span class="pc lk" style="--x:616;--y:70;--w:114;--h:104"></span>
+<span class="pc lk" style="--x:733;--y:70;--w:134;--h:104"></span>
+<span class="pc lk" style="--x:875;--y:70;--w:111;--h:104"></span>
+<span class="pc lk" style="--x:997;--y:70;--w:93;--h:104"></span>
+<span class="pc lk" style="--x:1097;--y:70;--w:95;--h:104"></span>
+</span>
+    </span></span><span class="sr">Electricidad Cabanes</span></h1>
+    <p class="tag" id="hTag">Electricista en Monóvar · <b>Urgencias 24 h</b></p>
+    <div class="hero-cta" id="hCta">
       <a class="btn-a" href="tel:+34630016752"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Llamar</a>
       <a class="btn-o" href="#contacto">Pedir presupuesto</a>
     </div>
   </div>
-  <a class="down" href="#resumen" aria-label="Seguir bajando">
+  <a class="down" id="hDown" href="#resumen" aria-label="Seguir bajando">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 9l7 7 7-7"/></svg>
   </a>
+ </div>
 </header>
 
 <main id="contenido" tabindex="-1">
@@ -877,6 +932,60 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&run&&!red
 sched();
 new IntersectionObserver(([e])=>{const was=run;run=e.isIntersecting;if(run&&!was&&!reduce){lastDraw=0;sched()}}).observe(document.querySelector('.hero'));
 
+/* ---------- Portada "Conectar": scroll fijo con suavizado propio (como nitor/BRACE) ----------
+   El progreso p (0–1) sale del scroll dentro de .hero; lo mostrado persigue a p con inercia (≈15 % por fotograma a 60 fps).
+   Solo se escriben transform y opacity, y el bucle se para cuando lo mostrado alcanza a p. */
+if(document.documentElement.classList.contains('hx')){
+  const hero=document.getElementById('inicio');
+  const q=(sel)=>[...hero.querySelectorAll(sel)];
+  const cw=hero.querySelector('.cw'),cin=cw.firstElementChild,tip=document.getElementById('hTip'),spark=document.getElementById('hSpark');
+  const flash=document.getElementById('hFlash'),glow=document.getElementById('hGlow'),tag=document.getElementById('hTag'),cta=document.getElementById('hCta'),down=document.getElementById('hDown');
+  const LB=q('.pc.lk'),LT=q('.pc.lt');
+  /* Línea central del cable en coordenadas del logo (medida sobre img/logo-cabanes.webp) */
+  const CX0=156,CX1=360,CY=[111,110.5,110,109.5,109.5,110,110,110.5,111,112,113,114,115,116.5,118,119,120,122,123,124,124.5,125,126,126,126,126,125,124.5,124,122.5,121,119,117,114,109.5];
+  const cy=x=>{const f=(x-CX0)/(CX1-CX0)*(CY.length-1),i=Math.min(CY.length-2,Math.max(0,Math.floor(f)));return CY[i]+(CY[i+1]-CY[i])*(f-i)};
+  const seg=(p,a,b)=>p<=a?0:p>=b?1:(p-a)/(b-a);
+  const eio=t=>t<.5?2*t*t:1-(-2*t+2)**2/2, eo=t=>1-(1-t)**3;
+  const spike=t=>t<=0||t>=1?0:t<.18?t/.18:1-(t-.18)/.82;
+  const rnd=(i,k)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)};
+  /* Encendido tipo fluorescente: parpadea unos instantes y se queda fijo */
+  const flick=(t,i)=>t<=0?.08:t>=.78?1:(rnd(i,Math.floor(t*9))>.42?.35+.65*t:.1+.12*t);
+  const last=new Map();
+  const set=(el,k,v)=>{const m=last.get(el)||{};if(m[k]!==v){m[k]=v;last.set(el,m);el.style[k]=v}};
+  const render=p=>{
+    const c=eio(seg(p,.04,.36)),off=((1-c)*100).toFixed(2);
+    set(cw,'transform',`translateX(-${off}%)`);set(cin,'transform',`translateX(${off}%)`);
+    const x=CX0+c*(CX1-CX0);
+    set(tip,'transform',`translate(calc(${(x-13).toFixed(1)} * var(--u)),calc(${(cy(x)-13).toFixed(1)} * var(--u)))`);
+    set(tip,'opacity',(c>0&&c<1?Math.min(1,c*10):0).toFixed(3));
+    const s=seg(p,.35,.5);
+    set(spark,'opacity',spike(s).toFixed(3));set(spark,'transform',`scale(${(.35+s*1.5).toFixed(3)})`);
+    set(flash,'opacity',spike(seg(p,.36,.56)).toFixed(3));
+    LB.forEach((el,i)=>set(el,'opacity',flick(seg(p,.4+i*.04,.4+i*.04+.1),i).toFixed(3)));
+    LT.forEach((el,i)=>{const t=eo(seg(p,.64+i*.012,.7+i*.012));set(el,'opacity',(.08+.92*t).toFixed(3))});
+    set(glow,'opacity',(.6*eo(seg(p,.5,.78))).toFixed(3));
+    const tg=eo(seg(p,.74,.86)),ct=eo(seg(p,.8,.92));
+    set(tag,'opacity',tg.toFixed(3));set(tag,'transform',`translateY(${((1-tg)*24).toFixed(1)}px)`);
+    set(cta,'opacity',ct.toFixed(3));set(cta,'transform',`translateY(${((1-ct)*24).toFixed(1)}px)`);
+    set(down,'opacity',(.55*(1-seg(p,0,.06))+.55*seg(p,.9,1)).toFixed(3));
+    set(cv,'opacity',(.3+.7*seg(p,.4,.62)).toFixed(3));
+  };
+  let span=1,target=0,shown=0,raf2=0,prev=0;
+  const measureHero=()=>{span=Math.max(1,hero.offsetHeight-innerHeight)};
+  const readTarget=()=>{target=Math.min(1,Math.max(0,(scrollY-hero.offsetTop)/span))};
+  const loop=now=>{
+    raf2=0;const dt=prev?Math.min(64,now-prev):16.7;prev=now;
+    shown+=(target-shown)*(1-Math.pow(.85,dt/16.7));
+    if(Math.abs(target-shown)<.0004)shown=target;
+    render(shown);
+    if(shown!==target)raf2=requestAnimationFrame(loop);else prev=0;
+  };
+  const kick=()=>{readTarget();if(!raf2)raf2=requestAnimationFrame(loop)};
+  addEventListener('scroll',kick,{passive:true});
+  addEventListener('resize',()=>{measureHero();kick()});
+  measureHero();readTarget();shown=target;render(shown); /* si se recarga a media página, sin animar desde 0 */
+}
+
 /* ---------- Texto que se ilumina al bajar ---------- */
 const lead=document.getElementById('lead');
 lead.innerHTML=lead.textContent.split(' ').map(w=>`<span class="w">${w}</span>`).join(' ');
@@ -886,11 +995,10 @@ const words=[...lead.querySelectorAll('.w')];
    Lecturas de layout (getBoundingClientRect, scrollHeight) solo en measure(): al cargar, en resize y cuando cambia el alto del documento.
    Durante el scroll update() no lee layout: calcula con valores en caché y escribe solo transform/opacity, y solo si el valor cambia.
    En móvil/táctil (mqLite) y con prefers-reduced-motion los efectos ligados al scroll se desactivan. */
-const heroIn=document.getElementById('heroIn');
 const tiles=[...document.querySelectorAll('.tile')].map(el=>({el,img:el.querySelector('img'),c:0,h:0}));
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
 const wv=words.map(()=>'');
-let vh=innerHeight,leadTop=0,leadH=1,tick=false,heroEnd=false,lastLead=-1;
+let vh=innerHeight,leadTop=0,leadH=1,tick=false,lastLead=-1;
 const measure=()=>{
   vh=innerHeight;const y=scrollY;
   const r=lead.getBoundingClientRect();leadTop=r.top+y;leadH=r.height;
@@ -899,8 +1007,6 @@ const measure=()=>{
 const update=()=>{
   tick=false;const y=scrollY;
   if(reduce||mqLite.matches)return;
-  if(y<vh){const h=clamp(y/(vh*.9));heroIn.style.transform=`translateY(${(y*.22).toFixed(1)}px)`;heroIn.style.opacity=(1-h*.9).toFixed(3);heroEnd=false}
-  else if(!heroEnd){heroEnd=true;heroIn.style.transform=`translateY(${(vh*.22).toFixed(1)}px)`;heroIn.style.opacity=.1}
   const lp=clamp((vh*.82-(leadTop-y))/(leadH+vh*.25));
   if(lp!==lastLead){lastLead=lp;const lit=lp*words.length*1.15;
     for(let i=0;i<words.length;i++){const v=(.2+.8*clamp(lit-i)).toFixed(2);if(v!==wv[i]){wv[i]=v;words[i].style.opacity=v}}}
@@ -914,7 +1020,7 @@ addEventListener('scroll',req,{passive:true});addEventListener('resize',remeasur
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(remeasure);
 if('ResizeObserver' in window)new ResizeObserver(remeasure).observe(document.body);
 mqLite.addEventListener('change',()=>{ /* al pasar a modo ligero se limpian los estilos en línea de los efectos */
-  if(mqLite.matches){words.forEach((w,i)=>{w.style.opacity='';wv[i]=''});tiles.forEach(t=>t.img.style.transform='');heroIn.style.transform='';heroIn.style.opacity='';lastLead=-1;heroEnd=false}
+  if(mqLite.matches){words.forEach((w,i)=>{w.style.opacity='';wv[i]=''});tiles.forEach(t=>t.img.style.transform='');lastLead=-1}
   remeasure()});
 measure();update();
 
