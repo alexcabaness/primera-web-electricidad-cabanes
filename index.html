@@ -482,6 +482,70 @@ main:focus{outline:none}
   #opiniones{background-image:radial-gradient(ellipse 120vw 40% at 0% 22%,rgba(245,165,36,.26),transparent 70%),radial-gradient(ellipse 110vw 38% at 100% 80%,rgba(44,61,255,.32),transparent 70%)}
   #contacto{background-image:radial-gradient(ellipse 120vw 36% at 100% 12%,rgba(122,44,255,.36),transparent 70%),radial-gradient(ellipse 110vw 36% at 0% 88%,rgba(245,165,36,.28),transparent 70%)}
 }
+
+/* ====================================================================
+   VERSIÓN ALTERNATIVA · "Cuadro eléctrico"
+   Idea: la web se lee como un cuadro de obra bien ordenado. Bandas de tinta azul marino
+   alternadas con bandas de papel claro (como un plano), tipografía de titular firme
+   (Montserrat 800) y los colores reales del cable (marrón, negro, gris, azul, tierra)
+   como único adorno en Servicios. Se quitan los degradados morados y las auroras.
+   ==================================================================== */
+:root{--night:#0a1426;--night-2:#0f1d38;--panel:#101d36;--card:#13213d;--ink:#eef1f6;--warm:#f4f1ea;--soft:#aeb8cb;--rule:#ffffff22;--rule-strong:#ffffff55;--accent:#f5a524;--cable:#2447d6}
+.hero canvas{background:radial-gradient(ellipse 80% 70% at 50% 45%,#13234a,#0a1426 62%,#070d1a)}
+body #resumen,body #quienes-somos,body #viviendas,body #obras,body #opiniones,body .foot{background-color:var(--night);background-image:none}
+body #resumen{background-image:radial-gradient(ellipse 70vw 55% at 50% 118%,rgba(245,165,36,.22),transparent 70%)}
+body #quienes-somos{background-image:radial-gradient(ellipse 60vw 60% at 100% 0%,rgba(245,165,36,.16),transparent 70%)}
+body #viviendas,body #obras{background-color:var(--night-2)}
+body .foot{background-image:radial-gradient(ellipse 60vw 120% at 50% 150%,rgba(245,165,36,.16),transparent 70%)}
+.about .aura,.paper .aura{display:none}
+
+h2{font:800 clamp(30px,4.4vw,54px)/1.04 Montserrat,var(--font);letter-spacing:-.03em;text-wrap:balance}
+h3{font-weight:600}
+.about .lead{font:700 clamp(26px,4vw,50px)/1.12 Montserrat,var(--font);letter-spacing:-.035em;max-width:20em}
+.hero-sub,.head p,.copy p,.svc-card p{text-wrap:pretty}
+.stat b{font-family:Montserrat,var(--font);font-weight:800;letter-spacing:-.03em}
+
+/* Bandas de papel */
+.paper{position:relative;color-scheme:light;background:#f2f4f7;color:#0e1b33;--ink:#0e1b33;--soft:#46536b;--rule:#0e1b3322;--rule-strong:#0e1b3366;--panel:#ffffff;--card:#ffffff}
+.paper .wrap{position:relative;z-index:1}
+.paper h2{color:#0a1426}
+.paper .btn-o:hover,.paper .btn-o:focus-visible{background:#0e1b3310}
+.paper .btn-a{color:#1a1405}
+.paper a:focus-visible,.paper :is(input,textarea,button):focus-visible{outline-color:var(--cable)}
+body #servicios{background-image:linear-gradient(#0e1b330d 1px,transparent 1px),linear-gradient(90deg,#0e1b330d 1px,transparent 1px);background-size:48px 48px;background-color:#f2f4f7}
+body #opiniones,body #contacto{background-color:#f2f4f7;background-image:none}
+
+/* Servicios: cada ficha lleva un color de cable (fases, neutro y tierra) */
+.paper .svc-card{border-top:4px solid var(--k,#8a5a2b);background:#fff;padding:24px 22px clamp(24px,3vw,34px);border-radius:0 0 var(--r) var(--r);box-shadow:0 1px 0 #0e1b3314}
+.paper .svc{gap:20px;column-gap:20px}
+.paper .svc-card>svg{color:#0e1b33}
+.svc-card:nth-child(1){--k:#8a5a2b}.svc-card:nth-child(2){--k:#2447d6}.svc-card:nth-child(3){--k:#111827}
+.svc-card:nth-child(4){--k:#8b93a1}.svc-card:nth-child(5){--k:#2f9e57}.svc-card:nth-child(6){--k:#f5a524}
+.paper .svc-card h3{color:#0a1426}
+
+/* Opiniones y contacto sobre papel */
+.paper .rev{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:24px 24px 22px}
+.paper .revs{gap:16px}
+.paper .rating .stars svg,.paper .stat b .star{fill:#f5a524}
+.paper .ct-phone:hover,.paper .ct-list dd a.mail:hover{color:var(--cable)}
+.paper .ct-list dt{color:#6b3f06}
+.paper .urg{color:#0e1b33;background:#f5a52429;border-color:#d98c0b}
+.paper .form{background:#fff;box-shadow:0 1px 0 #0e1b3314}
+.paper .form input:not([type=checkbox]),.paper .form textarea{background:#fff;color:#0e1b33;border:1px solid #5d6a82}
+.paper .err,.paper .form [aria-invalid=true]{color:#b42318}
+.paper .form [aria-invalid=true]{border-color:#b42318!important;box-shadow:0 0 0 1px #b42318}
+.paper .status.ok{color:#17703a}.paper .status.bad{color:#b42318}
+
+/* Tacto: respuesta inmediata al pulsar y transiciones solo de lo que cambia */
+.btn-a,.btn-o,.form button{transition:transform .16s cubic-bezier(.2,.7,.2,1),filter .25s,background-color .25s}
+.btn-a:active,.btn-o:active,.form button:active{transform:scale(.97)}
+@media(max-width:600px){
+  h2{font-size:30px}
+  .paper .svc-card{padding:14px 14px 16px;border-top-width:3px}
+  .paper .svc{gap:10px}
+  body #servicios{background-size:32px 32px}
+}
+@media(prefers-reduced-motion:reduce){.btn-a:active,.btn-o:active,.form button:active{transform:none}}
 </style>
 </head>
 <body>
@@ -536,7 +600,7 @@ main:focus{outline:none}
     </div>
   </section>
 
-  <section class="band dark" id="servicios" aria-labelledby="sv-h">
+  <section class="band paper" id="servicios" aria-labelledby="sv-h">
     <div class="wrap">
       <div class="head reveal">
         <h2 id="sv-h">Servicios</h2>
@@ -650,7 +714,7 @@ main:focus{outline:none}
       </article>
     </div>
   </section>
-  <section class="band dark alt" id="opiniones" aria-labelledby="op-h">
+  <section class="band paper" id="opiniones" aria-labelledby="op-h">
     <div class="wrap">
       <div class="head reveal">
         <h2 id="op-h">Opiniones de clientes</h2>
@@ -669,7 +733,7 @@ main:focus{outline:none}
     </div>
   </section>
 
-  <section class="band dark" id="contacto" aria-labelledby="ct-h">
+  <section class="band paper" id="contacto" aria-labelledby="ct-h">
     <div class="aura soft" aria-hidden="true"><i class="b0"></i><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
     <div class="wrap ct">
       <div class="ct-info">
