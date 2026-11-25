@@ -546,6 +546,80 @@ body #opiniones,body #contacto{background-color:#f2f4f7;background-image:none}
   body #servicios{background-size:32px 32px}
 }
 @media(prefers-reduced-motion:reduce){.btn-a:active,.btn-o:active,.form button:active{transform:none}}
+
+/* ====================================================================
+   SEGUNDA PASADA · reglas de impeccable, emil-design-eng, apple-design y design-taste-frontend
+   (aplicadas a partir de las versiones públicas de esas skills)
+   - Sin fundidos al hacer scroll en secciones ni fichas: todo está visible desde el primer momento.
+   - La portada entra una sola vez; el único momento "repartido" es el subrayado de Quiénes somos.
+   - Respuesta al pulsar (pointer-down), curvas ease-out propias, duraciones < 300 ms, solo transform/opacity.
+   - Hover solo con puntero fino; los subrayados se dibujan; sin transition:all.
+   - Servicios deja de ser una parrilla de tarjetas idénticas: lista editorial con la línea del color de cable que se dibuja.
+   - Sin pies de foto repetidos bajo las fotos de Obras.
+   ==================================================================== */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.77,0,.175,1)}
+.reveal,.tile{opacity:1;transform:none;transition:none}
+#obras .tile .cap{display:none}
+
+/* Portada: los botones entran después del logo, una sola vez */
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.hero-cta>*{animation:rise .5s var(--ease-out) both}
+.hero-cta>:nth-child(1){animation-delay:1.9s}.hero-cta>:nth-child(2){animation-delay:2.02s}
+@media(max-width:760px),(pointer:coarse){.hero-cta>:nth-child(1){animation-delay:.75s}.hero-cta>:nth-child(2){animation-delay:.87s}}
+
+/* Pulsación y hover */
+.btn-a,.btn-o,.form button,.rv-x{transition:transform .16s var(--ease-out),background-color .2s ease,filter .2s ease,border-color .2s ease}
+.btn-a:active,.btn-o:active,.form button:active,.rv-x:active{transform:scale(.97)}
+@media(hover:hover) and (pointer:fine){
+  .btn-a:hover{transform:translateY(-1px)}
+  .btn-o:hover{border-color:currentColor}
+  .tile:hover img{filter:brightness(1.07) saturate(1.04)}
+}
+/* Enlaces: el subrayado se dibuja */
+.foot a,.ct-list dd a.mail,.chk a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .28s var(--ease-out),color .2s ease;text-decoration:none}
+.foot a:hover,.ct-list dd a.mail:hover,.chk a:hover{background-size:100% 1px;text-decoration:none}
+.chk a{text-decoration:underline;background:none}
+.ct-phone{transition:color .2s ease}
+.down svg{animation-duration:2.4s}
+
+/* Tipografía: seguimiento según tamaño (cerrado en titulares, algo abierto en texto pequeño) */
+.note,.ct-sub,.sello,.hours,.chk,.foot p,.foot-end,.tile .cap{letter-spacing:.008em}
+.hero-sub{letter-spacing:-.012em}
+
+/* Servicios: lista editorial */
+@media(min-width:761px){
+  .paper .svc{grid-template-columns:minmax(0,1fr);gap:0;column-gap:0;border-bottom:1px solid var(--rule)}
+  .paper .svc-card{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.25fr);column-gap:clamp(20px,3vw,48px);align-items:center;
+    padding:26px 4px;background:none;box-shadow:none;border:0;border-top:1px solid var(--rule);border-radius:0}
+  .paper .svc-card::after{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--k);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease-out)}
+  .paper .svc-card>svg{width:30px;height:30px;margin:0;grid-row:auto}
+  .paper .svc-card h3{font-size:clamp(20px,2vw,26px);letter-spacing:-.02em}
+  .paper .svc-card p{max-width:46ch;color:var(--soft)}
+}
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+  .paper .svc-card:hover::after{transform:scaleX(1)}
+}
+/* Siempre visible un tramo del color del cable al inicio de cada fila */
+.paper .svc-card{position:relative}
+.paper .svc-card::before{content:"";position:absolute;left:0;top:-1px;width:56px;height:3px;background:var(--k)}
+@media(max-width:760px){
+  .paper .svc{border-bottom:1px solid var(--rule)}
+  .paper .svc-card{background:none;box-shadow:none;border:0;border-top:1px solid var(--rule);border-radius:0;padding:14px 0 16px}
+  .paper .svc-card::before{width:40px}
+}
+
+/* Ventana de reseñas: material translúcido y entrada corta desde el centro (nunca desde escala 0) */
+.rv{background:rgba(6,10,20,.56);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1)}
+@keyframes rv-in{from{opacity:0;transform:scale(.96) translateY(6px)}}
+@keyframes rv-fade{from{opacity:0}}
+.rv.on{animation:rv-fade .18s ease-out}
+.rv.on .rv-box{animation:rv-in .22s var(--ease-out)}
+@media(max-width:600px){.rv.on .rv-box{animation:sheet .3s var(--ease-out)}}
+@media(prefers-reduced-motion:reduce){
+  .hero-cta>*{animation:none}
+  .rv.on,.rv.on .rv-box{animation:rv-fade .12s linear}
+  .paper .svc-card::after{transition:none}
+}
 </style>
 </head>
 <body>
