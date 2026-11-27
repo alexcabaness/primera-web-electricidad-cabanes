@@ -70,6 +70,8 @@
 }
 </script>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/logo-cabanes.webp" as="image" type="image/webp" fetchpriority="high">
+<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("hx")</script>
 <style>
 /* VOICE: sobrio y artesanal; un oficio que se hereda
    IDEA: un hilo (el cable) que se va tejiendo a medida que se baja por la página
@@ -169,8 +171,10 @@ h3{font:500 clamp(21px,2.1vw,27px)/1.2 var(--font);margin:0 0 10px}
 
 .feature{display:grid;gap:clamp(20px,3vw,40px);margin-top:clamp(40px,6vw,80px)}
 .feature:first-of-type{margin-top:0}
-.fych{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:end}
-.fych .tile{aspect-ratio:3/2;height:auto}
+.fych{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start}
+.fy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.2vw,16px)}
+.fy-grid .tile{height:auto;aspect-ratio:2/3}
+.fy-grid .big{grid-column:1 / -1;aspect-ratio:3/2}
 .copy p{margin:0 0 18px;color:var(--soft);max-width:46ch}
 .clogo{height:clamp(56px,6vw,76px);width:auto;max-width:200px;object-fit:contain;margin-bottom:22px}
 .clogo-a{display:inline-block;margin-bottom:22px}.clogo-a .clogo{margin:0;display:block}
@@ -366,16 +370,6 @@ main:focus{outline:none}
   .tile img{top:0;height:100%;transform:none!important}
 }
 /* ---- Versión 2: móvil primero ---- */
-/* Logo en móvil: el mismo logo partido en dos piezas (enchufe + palabra) apiladas, para que sea el protagonista de la primera pantalla */
-.logo-m{display:none}
-@media(max-width:760px){
-  .logo-h{width:100%}
-  .logo{display:none}
-  .logo-m{display:flex;flex-direction:column;align-items:center;gap:clamp(12px,3.4vw,20px);width:100%;line-height:0;animation:lift 1.2s .2s ease both}
-  .logo-m i{display:block;background-image:url(img/logo-cabanes.webp);background-repeat:no-repeat}
-  .logo-m .lp{width:min(66vw,280px);aspect-ratio:336/104;background-size:360.7% auto;background-position:1.83% 62.9%}
-  .logo-m .lw{width:100%;max-width:560px;aspect-ratio:845/155;background-size:143.4% auto;background-position:97% 52.6%}
-}
 .hero-cta .btn-a,.hero-cta .btn-o{min-height:44px;padding:0 20px;font-size:15px}
 .hero-cta{gap:10px}
 
@@ -482,6 +476,65 @@ main:focus{outline:none}
   #opiniones{background-image:radial-gradient(ellipse 120vw 40% at 0% 22%,rgba(245,165,36,.26),transparent 70%),radial-gradient(ellipse 110vw 38% at 100% 80%,rgba(44,61,255,.32),transparent 70%)}
   #contacto{background-image:radial-gradient(ellipse 120vw 36% at 100% 12%,rgba(122,44,255,.36),transparent 70%),radial-gradient(ellipse 110vw 36% at 0% 88%,rgba(245,165,36,.28),transparent 70%)}
 }
+
+/* ---- Encendido de bombilla al abrir la web ----
+   El logo está troceado en capas (enchufe, cable, 12 mitades superiores y 7 inferiores de letra, resplandor).
+   Al cargar: el cable se dibuja, salta la chispa y las letras se encienden una a una como una bombilla/fluorescente
+   (parpadean y se quedan fijas). Solo transform y opacity. Sin JS o con "reducir movimiento" se ve ya encendido. */
+.logo-h{width:100%}
+.lg{display:block;width:min(92vw,880px);container-type:inline-size;margin-inline:auto}
+.lgi{--W:1212;--H:193;--u:calc(100cqw / var(--W));position:relative;display:block;height:calc(var(--H) * var(--u))}
+.g{--gx:0;--gy:0;--gs:1;position:absolute;left:0;top:0;transform:translate(calc(var(--gx) * var(--u)),calc(var(--gy) * var(--u))) scale(var(--gs));transform-origin:0 0}
+.pc,.cw,.tip,.spark{position:absolute;display:block;left:calc(var(--x) * var(--u));top:calc(var(--y) * var(--u));width:calc(var(--w) * var(--u));height:calc(var(--h) * var(--u))}
+.pc{background:url(img/logo-cabanes.webp) no-repeat calc(var(--x) * var(--u) * -1) calc(var(--y) * var(--u) * -1)/calc(1212 * var(--u)) auto}
+.pc.glow{background-image:url(img/logo-glow.webp);opacity:.6}
+.cw{overflow:hidden}.cw>.pc{left:0;top:0}
+.tip{display:none}
+.spark{--x:298;--y:50;--w:120;--h:120;border-radius:50%;background:radial-gradient(closest-side,#fff 0,#ffe3a1 14%,rgba(255,176,60,.55) 34%,rgba(255,150,30,.12) 62%,transparent);opacity:0}
+.flash{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 48%,rgba(255,176,60,.28),transparent 70%);opacity:0}
+@media(max-width:760px){
+  /* Móvil: enchufe y cable arriba (más grandes) y el nombre debajo */
+  .lg{width:min(100%,560px)}
+  .lgi{--W:860;--H:351}
+  .g1{--gx:201;--gy:-75;--gs:1.25}
+  .g2{--gx:-345;--gy:171}
+}
+@keyframes bulb-a{0%{opacity:.08}7%{opacity:.75}13%{opacity:.1}24%{opacity:.95}31%{opacity:.25}44%{opacity:1}52%{opacity:.5}66%{opacity:1}100%{opacity:1}}
+@keyframes bulb-b{0%{opacity:.08}10%{opacity:.35}16%{opacity:.08}29%{opacity:.85}38%{opacity:.2}50%{opacity:.95}58%{opacity:.6}72%{opacity:1}100%{opacity:1}}
+@keyframes cable-in{from{transform:translateX(-100%)}}
+@keyframes cable-in-i{from{transform:translateX(100%)}}
+@keyframes plug-in{from{opacity:0}}
+@keyframes spark{0%{opacity:0;transform:scale(.35)}25%{opacity:1}100%{opacity:0;transform:scale(1.85)}}
+@keyframes flashp{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+@keyframes glowin{from{opacity:0}to{opacity:.6}}
+.hx .pc.lk,.hx .pc.lt{opacity:.08;animation:bulb-a 1.15s linear both;animation-delay:calc(.95s + var(--i) * .085s)}
+.hx .pc.lk:nth-child(even),.hx .pc.lt:nth-child(even){animation-name:bulb-b}
+.hx .g1>.pc:first-child{animation:plug-in .35s .1s ease-out both}
+.hx .cw{animation:cable-in .7s .3s cubic-bezier(.65,0,.35,1) both}
+.hx .cw>.pc{animation:cable-in-i .7s .3s cubic-bezier(.65,0,.35,1) both}
+.hx .spark{animation:spark .75s .95s ease-out both}
+.hx .flash{animation:flashp 1.6s .95s ease-out both}
+.hx .pc.glow{opacity:0;animation:glowin 1.3s 1.7s ease-out both}
+.hx .hero-cta>*{animation:rise .5s var(--ease-out,cubic-bezier(.23,1,.32,1)) both}
+.hx .hero-cta>:nth-child(1){animation-delay:2.1s}.hx .hero-cta>:nth-child(2){animation-delay:2.22s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+
+/* Quiénes somos (legado y experiencia) sobre fondo blanco, como en la versión alternativa */
+body #quienes-somos{background-color:#b8b9c8;background-image:none;color:#0e1b33;color-scheme:light}
+#quienes-somos::before{display:none}
+#quienes-somos .aura{display:none}
+#quienes-somos .lead{color:#0a1426}
+#quienes-somos .pillar{border-top-color:#0e1b3338}
+#quienes-somos .pillar h3{color:#0a1426}
+#quienes-somos .pillar p{color:#2c3850}
+#quienes-somos .pillar::before{background:#f5a524}
+
+/* Transición suave entre las bandas oscuras y la franja blanca de Quiénes somos (degradado arriba y abajo) */
+body #quienes-somos{--pp:color-mix(in srgb,#eef0f7 72%,#1a1840);--fade:clamp(110px,14vw,200px);padding-block:calc(var(--fade) + clamp(24px,4vw,56px));
+  background-image:
+    radial-gradient(ellipse 55vw 38% at 96% 30%,rgba(245,165,36,.14),transparent 70%),radial-gradient(ellipse 55vw 38% at 4% 70%,rgba(122,44,255,.10),transparent 70%),
+    linear-gradient(to bottom,var(--night) 0,color-mix(in srgb,var(--night) 78%,var(--pp)) calc(var(--fade) * .22),color-mix(in srgb,var(--night) 42%,var(--pp)) calc(var(--fade) * .5),color-mix(in srgb,var(--night) 12%,var(--pp)) calc(var(--fade) * .78),var(--pp) var(--fade),var(--pp) calc(100% - var(--fade)),color-mix(in srgb,var(--night-2) 12%,var(--pp)) calc(100% - var(--fade) * .78),color-mix(in srgb,var(--night-2) 42%,var(--pp)) calc(100% - var(--fade) * .5),color-mix(in srgb,var(--night-2) 78%,var(--pp)) calc(100% - var(--fade) * .22),var(--night-2) 100%)}
+@media(max-width:600px){body #quienes-somos{--fade:96px;padding-block:calc(var(--fade) + 14px)}}
 </style>
 </head>
 <body>
@@ -506,8 +559,37 @@ main:focus{outline:none}
 
 <header class="hero" id="inicio">
   <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="flash" aria-hidden="true"></div>
   <div class="hero-in" id="heroIn">
-    <h1 class="logo-h"><img class="logo" fetchpriority="high" src="img/logo-cabanes.webp" alt="" width="1212" height="193"><span class="logo-m" aria-hidden="true"><i class="lp"></i><i class="lw"></i></span><span class="sr">Electricidad Cabanes · Electricista en Monóvar (Alicante)</span></h1>
+    <h1 class="logo-h"><span class="lg" aria-hidden="true"><span class="lgi">
+<span class="g g1">
+<span class="pc" style="--x:18;--y:60;--w:138;--h:114"></span>
+<span class="cw" style="--x:156;--y:96;--w:199;--h:42"><span class="pc" style="--x:156;--y:96;--w:199;--h:42"></span></span>
+<span class="tip"></span><span class="spark"></span>
+</span>
+<span class="g g2">
+<span class="pc glow" style="--x:340;--y:0;--w:872;--h:193"></span>
+<span class="pc lt" style="--x:371;--y:18;--w:36;--h:48;--i:1"></span>
+<span class="pc lt" style="--x:437;--y:18;--w:35;--h:48;--i:2"></span>
+<span class="pc lt" style="--x:500;--y:18;--w:36;--h:48;--i:3"></span>
+<span class="pc lt" style="--x:563;--y:18;--w:41;--h:48;--i:4"></span>
+<span class="pc lt" style="--x:629;--y:18;--w:39;--h:48;--i:5"></span>
+<span class="pc lt" style="--x:696;--y:18;--w:39;--h:48;--i:6"></span>
+<span class="pc lt" style="--x:766;--y:18;--w:15;--h:48;--i:7"></span>
+<span class="pc lt" style="--x:811;--y:18;--w:42;--h:48;--i:8"></span>
+<span class="pc lt" style="--x:883;--y:18;--w:15;--h:48;--i:9"></span>
+<span class="pc lt" style="--x:931;--y:18;--w:44;--h:48;--i:10"></span>
+<span class="pc lt" style="--x:999;--y:18;--w:46;--h:48;--i:11"></span>
+<span class="pc lt" style="--x:1073;--y:18;--w:44;--h:48;--i:12"></span>
+<span class="pc lk" style="--x:352;--y:70;--w:118;--h:104;--i:13"></span>
+<span class="pc lk" style="--x:473;--y:70;--w:133;--h:104;--i:14"></span>
+<span class="pc lk" style="--x:616;--y:70;--w:114;--h:104;--i:15"></span>
+<span class="pc lk" style="--x:733;--y:70;--w:134;--h:104;--i:16"></span>
+<span class="pc lk" style="--x:875;--y:70;--w:111;--h:104;--i:17"></span>
+<span class="pc lk" style="--x:997;--y:70;--w:93;--h:104;--i:18"></span>
+<span class="pc lk" style="--x:1097;--y:70;--w:95;--h:104;--i:19"></span>
+</span>
+    </span></span><span class="sr">Electricidad Cabanes · Electricista en Monóvar (Alicante)</span></h1>
     <div class="hero-cta">
       <a class="btn-a" href="tel:+34630016752"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Llamar</a>
       <a class="btn-o" href="#contacto">Pedir presupuesto</a>
@@ -577,24 +659,6 @@ main:focus{outline:none}
     </div>
   </section>
 
-  <section class="band about" id="quienes-somos" aria-labelledby="qs-h">
-    <div class="aura soft" aria-hidden="true"><i class="b0"></i><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
-    <div class="wrap">
-      <h2 class="sr" id="qs-h">Quiénes somos</h2>
-      <p class="lead" id="lead">Electricidad Cabanes es un oficio que se hereda. Generaciones de experiencia detrás de cada instalación, de cada cuadro y de cada punto de luz.</p>
-      <div class="pillars">
-        <div class="pillar reveal">
-          <h3>Legado generacional</h3>
-          <p>El conocimiento pasa de padres a hijos. Lo que se aprende en una obra se mejora en la siguiente, y esa continuidad es lo que nos define.</p>
-        </div>
-        <div class="pillar reveal">
-          <h3>Experiencia</h3>
-          <p>Desde 1971 instalando, reformando y manteniendo. De una vivienda a una nave industrial, resolvemos cada proyecto con el mismo rigor.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="band dark alt" id="viviendas" aria-labelledby="vv-h">
     <div class="wrap">
       <div class="head reveal">
@@ -613,13 +677,13 @@ main:focus{outline:none}
       </div>
 
       <article class="feature fych">
-        <div class="tile-wrap" id="fych"></div>
         <div class="copy reveal">
           <a class="clogo-a" href="https://www.fychtech.com/" target="_blank" rel="noopener" aria-label="Fych Technologies"><img class="clogo" src="img/logo-fych.webp" alt="Fych Technologies" width="705" height="240"><span class="sr"> (se abre en otra pestaña)</span></a>
           <h3>Nave industrial Fych</h3>
-          <p>Instalación eléctrica y alumbrado de nave industrial.</p>
+          <p>Instalación eléctrica y alumbrado de nave industrial, con cuadros eléctricos de potencia y cuadro de mando.</p>
           <a class="btn-o" href="https://www.fychtech.com/" target="_blank" rel="noopener">Ver fychtech.com<svg class="ico-s" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr"> (se abre en otra pestaña)</span></a>
         </div>
+        <div class="fy-grid" id="fych"></div>
       </article>
 
       <article class="feature cowork">
@@ -650,6 +714,24 @@ main:focus{outline:none}
       </article>
     </div>
   </section>
+  <section class="band about" id="quienes-somos" aria-labelledby="qs-h">
+    <div class="aura soft" aria-hidden="true"><i class="b0"></i><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
+    <div class="wrap">
+      <h2 class="sr" id="qs-h">Quiénes somos</h2>
+      <p class="lead" id="lead">Electricidad Cabanes es un oficio que se hereda. Generaciones de experiencia detrás de cada instalación, de cada cuadro y de cada punto de luz.</p>
+      <div class="pillars">
+        <div class="pillar reveal">
+          <h3>Legado generacional</h3>
+          <p>El conocimiento pasa de padres a hijos. Lo que se aprende en una obra se mejora en la siguiente, y esa continuidad es lo que nos define.</p>
+        </div>
+        <div class="pillar reveal">
+          <h3>Experiencia</h3>
+          <p>Desde 1971 instalando, reformando y manteniendo. De una vivienda a una nave industrial, resolvemos cada proyecto con el mismo rigor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="band dark alt" id="opiniones" aria-labelledby="op-h">
     <div class="wrap">
       <div class="head reveal">
@@ -799,7 +881,11 @@ const G={
     {f:'casa-recibidor',c:'Recibidor',a:'Recibidor con armario de madera y luz indirecta bajo mostrador',p:'38% 50%'},
     {f:'casa-bano-1',c:'Baño',a:'Baño en tonos piedra con tira de luz perimetral'},
     {f:'casa-bano-2',c:'Baño',a:'Baño con azulejo de escamas y luz rasante en pared',p:'50% 30%'}],
-  fych:[{f:'fych-nave',c:'Nave industrial · Fych',a:'Nave industrial de Fych'}],
+  fych:[
+    {f:'fych-nave',c:'Nave industrial · Fych',a:'Nave industrial de Fych',k:'big'},
+    {f:'fych-cuadro-interior',c:'Fych · Cuadro de potencia',a:'Interior de un cuadro eléctrico con interruptor automático, pletinas de cobre y cables verdes'},
+    {f:'fych-cuadros-nave',c:'Fych · Cuadros eléctricos',a:'Tres armarios de cuadros eléctricos con las puertas abiertas en la nave'},
+    {f:'fych-cuadro-mando',c:'Fych · Cuadro de mando',a:'Cuadro de mando con pantalla de Fych, seta de emergencia y bandejas de cables ordenadas'}],
   cowork:[
     {f:'hicowork-4',c:'Hi Cowork · Zona de descanso',a:'Zona de descanso con falso techo circular iluminado',k:'big'},
     {f:'hicowork-1',c:'Hi Cowork · Puestos de trabajo',a:'Mesas de trabajo con luminarias lineales suspendidas'},
