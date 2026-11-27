@@ -520,17 +520,17 @@ main:focus{outline:none}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
 
 /* Quiénes somos (legado y experiencia) sobre fondo blanco, como en la versión alternativa */
-body #quienes-somos{background-color:#e3e5ea;background-image:none;color:#0e1b33;color-scheme:light}
+body #quienes-somos{background-color:#b8b9c8;background-image:none;color:#0e1b33;color-scheme:light}
 #quienes-somos::before{display:none}
 #quienes-somos .aura{display:none}
 #quienes-somos .lead{color:#0a1426}
-#quienes-somos .pillar{border-top-color:#0e1b3322}
+#quienes-somos .pillar{border-top-color:#0e1b3338}
 #quienes-somos .pillar h3{color:#0a1426}
-#quienes-somos .pillar p{color:#46536b}
+#quienes-somos .pillar p{color:#2c3850}
 #quienes-somos .pillar::before{background:#f5a524}
 
 /* Transición suave entre las bandas oscuras y la franja blanca de Quiénes somos (degradado arriba y abajo) */
-body #quienes-somos{--pp:color-mix(in srgb,#f4f5f8 92%,var(--night));--fade:clamp(110px,14vw,200px);padding-block:calc(var(--fade) + clamp(24px,4vw,56px));
+body #quienes-somos{--pp:color-mix(in srgb,#eef0f7 72%,#1a1840);--fade:clamp(110px,14vw,200px);padding-block:calc(var(--fade) + clamp(24px,4vw,56px));
   background-image:
     radial-gradient(ellipse 55vw 38% at 96% 30%,rgba(245,165,36,.14),transparent 70%),radial-gradient(ellipse 55vw 38% at 4% 70%,rgba(122,44,255,.10),transparent 70%),
     linear-gradient(to bottom,var(--night) 0,color-mix(in srgb,var(--night) 78%,var(--pp)) calc(var(--fade) * .22),color-mix(in srgb,var(--night) 42%,var(--pp)) calc(var(--fade) * .5),color-mix(in srgb,var(--night) 12%,var(--pp)) calc(var(--fade) * .78),var(--pp) var(--fade),var(--pp) calc(100% - var(--fade)),color-mix(in srgb,var(--night-2) 12%,var(--pp)) calc(100% - var(--fade) * .78),color-mix(in srgb,var(--night-2) 42%,var(--pp)) calc(100% - var(--fade) * .5),color-mix(in srgb,var(--night-2) 78%,var(--pp)) calc(100% - var(--fade) * .22),var(--night-2) 100%)}
