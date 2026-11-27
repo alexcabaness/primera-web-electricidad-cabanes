@@ -494,11 +494,11 @@ main:focus{outline:none}
 .spark{--x:298;--y:50;--w:120;--h:120;border-radius:50%;background:radial-gradient(closest-side,#fff 0,#ffe3a1 14%,rgba(255,176,60,.55) 34%,rgba(255,150,30,.12) 62%,transparent);opacity:0}
 .flash{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 48%,rgba(255,176,60,.28),transparent 70%);opacity:0}
 @media(max-width:760px){
-  /* Móvil: enchufe y cable arriba (más grandes) y el nombre debajo */
+  /* Móvil: sin enchufe ni cable (la bombilla de la foto da la luz); solo el nombre, que se enciende letra a letra */
   .lg{width:min(100%,560px)}
-  .lgi{--W:860;--H:351}
-  .g1{--gx:201;--gy:-75;--gs:1.25}
-  .g2{--gx:-345;--gy:171}
+  .lgi{--W:860;--H:176}
+  .g1{display:none}
+  .g2{--gx:-345;--gy:0}
 }
 @keyframes bulb-a{0%{opacity:.08}7%{opacity:.75}13%{opacity:.1}24%{opacity:.95}31%{opacity:.25}44%{opacity:1}52%{opacity:.5}66%{opacity:1}100%{opacity:1}}
 @keyframes bulb-b{0%{opacity:.08}10%{opacity:.35}16%{opacity:.08}29%{opacity:.85}38%{opacity:.2}50%{opacity:.95}58%{opacity:.6}72%{opacity:1}100%{opacity:1}}
