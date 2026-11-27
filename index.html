@@ -528,6 +528,12 @@ body #quienes-somos{background-color:#f2f4f7;background-image:none;color:#0e1b33
 #quienes-somos .pillar h3{color:#0a1426}
 #quienes-somos .pillar p{color:#46536b}
 #quienes-somos .pillar::before{background:#f5a524}
+
+/* Transición suave entre las bandas oscuras y la franja blanca de Quiénes somos (degradado arriba y abajo) */
+body #quienes-somos{--pp:#f2f4f7;--fade:clamp(110px,14vw,200px);padding-block:calc(var(--fade) + clamp(24px,4vw,56px));
+  background-image:
+    linear-gradient(to bottom,var(--night) 0,color-mix(in srgb,var(--night) 78%,var(--pp)) calc(var(--fade) * .22),color-mix(in srgb,var(--night) 42%,var(--pp)) calc(var(--fade) * .5),color-mix(in srgb,var(--night) 12%,var(--pp)) calc(var(--fade) * .78),var(--pp) var(--fade),var(--pp) calc(100% - var(--fade)),color-mix(in srgb,var(--night-2) 12%,var(--pp)) calc(100% - var(--fade) * .78),color-mix(in srgb,var(--night-2) 42%,var(--pp)) calc(100% - var(--fade) * .5),color-mix(in srgb,var(--night-2) 78%,var(--pp)) calc(100% - var(--fade) * .22),var(--night-2) 100%)}
+@media(max-width:600px){body #quienes-somos{--fade:96px;padding-block:calc(var(--fade) + 14px)}}
 </style>
 </head>
 <body>
