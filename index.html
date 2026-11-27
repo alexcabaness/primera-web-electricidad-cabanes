@@ -8,6 +8,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="image" href="img/hero-bombillas.webp" type="image/webp">
 <meta name="theme-color" content="#0b0a16">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
@@ -519,6 +520,45 @@ main:focus{outline:none}
 .hx .hero-cta>:nth-child(1){animation-delay:2.1s}.hx .hero-cta>:nth-child(2){animation-delay:2.22s}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
 
+/* ---- Portada con foto: la bombilla se enciende en la oscuridad y su luz revela la foto ----
+   Capas dentro de .hero-bg: foto, viñeta fija, velo negro, copia recortada de la bombilla encendida (.lamp) y halo de luz.
+   La secuencia solo anima opacity y transform. La posición de la bombilla se calcula con unidades de contenedor (cq)
+   para que .lamp y .halo coincidan con la foto en cualquier pantalla. Sin JS o con "reducir movimiento" se ve el estado final. */
+.hero{--B:1.9s;justify-content:flex-end}
+.hero #bg{display:none}
+@media(max-width:760px){.hero{padding-bottom:156px}}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;container-type:size;background:var(--night);pointer-events:none;
+  --ar:1.7932;--bx:.3247;--by:.4635;--cx:50cqw;--cy:25cqh;
+  --rw:max(calc(100cqh * var(--ar) * .62),118cqw);--rh:calc(var(--rw) / var(--ar));
+  --L:clamp(calc(100cqw - var(--rw)),calc(var(--cx) - var(--bx) * var(--rw)),0px);
+  --T:calc(var(--cy) - var(--by) * var(--rh));
+  --bxp:calc(var(--L) + var(--bx) * var(--rw));--byp:calc(var(--T) + var(--by) * var(--rh));
+  --lr:calc(var(--rw) * .0847);--hr:calc(max(100cqw,100cqh) * .8)}
+@media(min-width:761px){.hero-bg{--rw:max(100cqw,calc(100cqh * var(--ar) * .9));--cy:27cqh}}
+.hero-bg>*{position:absolute;display:block}
+.hero-bg .ph{left:var(--L);top:var(--T);width:var(--rw);height:var(--rh);max-width:none;
+  -webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.hero-bg .vig{inset:0;background:radial-gradient(ellipse 90% 60% at var(--bxp) var(--byp),transparent 30%,rgba(11,10,22,.78) 100%),linear-gradient(transparent 42%,rgba(11,10,22,.7) 78%,var(--night))}
+.hero-bg .veil{inset:0;background:#000;opacity:0}
+.hero-bg .lamp{left:calc(var(--bxp) - var(--lr));top:calc(var(--byp) - var(--lr));width:calc(var(--lr) * 2);height:calc(var(--lr) * 2);border-radius:50%;opacity:0;
+  background:url(img/hero-bombillas.webp) no-repeat calc(var(--lr) - var(--bx) * var(--rw)) calc(var(--lr) - var(--by) * var(--rh))/var(--rw) var(--rh)}
+.hero-bg .halo{left:calc(var(--bxp) - var(--hr));top:calc(var(--byp) - var(--hr));width:calc(var(--hr) * 2);height:calc(var(--hr) * 2);border-radius:50%;opacity:.55;
+  background:radial-gradient(closest-side,rgba(255,228,170,.5),rgba(255,176,70,.17) 38%,transparent 72%)}
+.hx .hero-bg .veil{opacity:1;animation:veil-off 1.3s 1.5s cubic-bezier(.45,0,.2,1) forwards}
+.hx .hero-bg .lamp{animation:lamp-on 2.6s .35s linear forwards}
+.hx .hero-bg .halo{opacity:0;transform:scale(.22);animation:halo-on 2.6s .35s linear forwards}
+
+@keyframes veil-off{to{opacity:0}}
+@keyframes lamp-on{0%{opacity:0}5%{opacity:.9}8%{opacity:.05}13%{opacity:0}17%{opacity:.6}20%{opacity:.1}26%{opacity:1}31%{opacity:.45}35%{opacity:1}42%{opacity:.8}46%{opacity:1}80%{opacity:1}100%{opacity:0}}
+@keyframes halo-on{0%{opacity:0;transform:scale(.22)}5%{opacity:.5}8%{opacity:0}13%{opacity:0}17%{opacity:.35}20%{opacity:.05}26%{opacity:.8}31%{opacity:.3}35%{opacity:.8;transform:scale(.22)}46%{opacity:.9}100%{opacity:.55;transform:scale(1);animation-timing-function:ease-out}}
+/* El logo y los botones entran después de la bombilla (misma secuencia de siempre, desplazada --B) */
+.hx .pc.lk,.hx .pc.lt{animation-delay:calc(var(--B) + .95s + var(--i) * .07s)}
+.hx .g1>.pc:first-child{animation-delay:calc(var(--B) + .1s)}
+.hx .cw,.hx .cw>.pc{animation-delay:calc(var(--B) + .3s)}
+.hx .spark,.hx .flash{animation-delay:calc(var(--B) + .95s)}
+.hx .pc.glow{animation-delay:calc(var(--B) + 1.7s)}
+.hx .hero-cta>:nth-child(1){animation-delay:calc(var(--B) + 1.9s)}.hx .hero-cta>:nth-child(2){animation-delay:calc(var(--B) + 2.02s)}
+
 /* Quiénes somos (legado y experiencia) sobre fondo blanco, como en la versión alternativa */
 body #quienes-somos{background-color:#b8b9c8;background-image:none;color:#0e1b33;color-scheme:light}
 #quienes-somos::before{display:none}
@@ -559,6 +599,10 @@ body #quienes-somos{--pp:color-mix(in srgb,#eef0f7 72%,#1a1840);--fade:clamp(110
 
 <header class="hero" id="inicio">
   <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="hero-bg" aria-hidden="true">
+    <img class="ph" src="img/hero-bombillas.webp" alt="" width="1700" height="948" fetchpriority="high" decoding="async">
+    <i class="vig"></i><i class="veil"></i><i class="lamp"></i><i class="halo"></i>
+  </div>
   <div class="flash" aria-hidden="true"></div>
   <div class="hero-in" id="heroIn">
     <h1 class="logo-h"><span class="lg" aria-hidden="true"><span class="lgi">
@@ -925,7 +969,7 @@ function bolt(){
   const br=jag([[bx,by],[bx+Math.cos(ba)*len*.4,by+Math.sin(ba)*len*.4]],len*.12,lite?3:5);
   bolts.push({paths:[main,br],life:0,amber:Math.random()<.5});
 }
-const sched=()=>{if(!raf)raf=requestAnimationFrame(frame)};
+const sched=()=>{/* el canvas está oculto (portada con foto): no se dibuja */};
 function frame(now){
   raf=0;
   if(!run||document.hidden)return;
